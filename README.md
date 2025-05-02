@@ -1,4 +1,4 @@
-# Node.js Express API with Prisma ORM
+# Bike Service Center
 
 This project name is (bike-servicing-center) is a **RESTful API** owned by FORIDA PARVEN, built using **Node.js**, **Express.js**, and **Prisma ORM**. It provides a clean and scalable backend for modern web and mobile applications. The API supports **CRUD (Create, Read, Update, Delete)** operations, allowing users to manage data in a **PostgreSQL** or **MySQL** database with ease.
 
@@ -59,5 +59,5 @@ Run the Prisma migrations to set up your database:
 ### subMission Link:
 GitHub Repo Link:https://github.com/Anneparvin/bike-service-center
 
-Live Backend URL(Vercel):Live API Link
+Live Backend URL(Vercel):https://bike-servicing-center-dun.vercel.app
 

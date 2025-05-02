@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction} from "express";
 import httpStatus from "http-status";
 import sendResponse from "../../utils/sensResponse";
 import { serviceRecordServices } from "./service.service";
@@ -67,15 +67,19 @@ const getServiceById = async(req:Request, res: Response) => {
         });
       };
 
-      const getServicesByStatus = async (req: Request, res: Response) => {
+      const getServicesByStatus = async (req: Request, res: Response, next: NextFunction) => {
 
-        const result = await serviceRecordServices.getOverdueOrPendingServices();
-        sendResponse(res, {
-            statusCode: httpStatus.OK,
-            success:true,
-            message:'Overdue or pending services fetched successfully',
-            data: result,
-        });
+        try {
+            const services = await serviceRecordServices.getOverdueOrPendingServices();
+        
+            res.status(200).json({
+              success: true,
+              message: services ? "Overdue or pending services fetched successfully" : "No matching service records found",
+              data: services,
+            });
+          } catch (error) {
+            next(error);
+          }
       }
 export const serviceController = {
   createService,
