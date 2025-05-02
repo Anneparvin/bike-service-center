@@ -1,0 +1,48 @@
+
+generator client {
+  provider = "prisma-client-js"
+  }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// Customer table
+model Customer {
+  customerId    String      @id @default(uuid()) 
+  name          String     // Full name of the customer
+  email         String      @unique     // Unique email
+  phone         String     // Contact number
+  createdAt     DateTime    @default(now()) // Auto timestamp when created
+  bikes         Bike[]      // One-to-many relationship with Bike table
+
+  @@map("customers")
+}
+
+// Bike table
+model Bike {
+  bikeId        String      @id @default(uuid()) // UUID as primary key
+  brand         String      // Brand of the bike (e.g., Honda, Yamaha)
+  model         String      // Model name
+  year          Int         // Manufacturing year
+  customerId    String      // Foreign key referencing Customer
+  customer      Customer    @relation(fields: [customerId], references: [customerId]) // Many-to-one relationship with Customer table
+  serviceRecords ServiceRecord[] // One-to-many relationship with ServiceRecord table
+
+  @@map("bikes")
+}
+
+// ServiceRecord table
+model ServiceRecord {
+  serviceId       String      @id @default(uuid()) // UUID as primary key
+  bikeId          String      // Foreign key referencing Bike
+  bike            Bike        @relation(fields: [bikeId], references: [bikeId]) // Many-to-one relationship with Bike table
+  serviceDate     DateTime    // Date the service started
+  completionDate  DateTime?   // Nullable. Date the service completed
+  description     String      // Details of service (e.g., oil change)
+  status          String       @default("pending") // default set here // Status: "pending", "in-progress", "done"
+
+  @@map("servicerecords")
+}
